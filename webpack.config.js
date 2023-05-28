@@ -1,24 +1,34 @@
 // Generated using webpack-cli https://github.com/webpack/webpack-cli
 
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+/* eslint-disable */
+import path from 'path';
+import url from 'url';
 
-const isProduction = process.env.NODE_ENV === 'production';
+import HTMLWebpackPlugin from 'html-webpack-plugin';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 
-const config = {
-  entry: './src/index.js',
+const __filename = url.fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const mode = process.env.NODE_ENV === 'production' ? 'production' : 'development';
+
+export default {
+  //context: path.resolve(__dirname, 'src'),
+  mode: mode,
+  entry: './src/js/index.js',
   output: {
     path: path.resolve(__dirname, 'dist'),
+    clean: true,
   },
   devServer: {
     open: true,
     host: 'localhost',
   },
-  plugins: [
-    new HtmlWebpackPlugin({
+    plugins: [
+    new HTMLWebpackPlugin({
       template: 'index.html',
     }),
-
+    new MiniCssExtractPlugin(),
   ],
   module: {
     rules: [
@@ -31,10 +41,11 @@ const config = {
         type: 'asset',
       },
 
-      { test: /\.css$/, use: ['style-loader', 'css-loader', 'postcss-loader'] },
+      { test: /\.css$/, 
+      use: ['style-loader', 'css-loader', 'postcss-loader'] },
       {
         test: /\.scss$/,
-        use: ['style-loader', 'css-loader', 'sass-loader', 'postcss-loader'],
+        use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader', 'postcss-loader'],
       },
       {
         test: /\.woff2?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
@@ -46,13 +57,4 @@ const config = {
       },
     ],
   },
-};
-
-module.exports = () => {
-  if (isProduction) {
-    config.mode = 'production';
-  } else {
-    config.mode = 'development';
-  }
-  return config;
 };
