@@ -8,5 +8,12 @@ export default {
         invalidRSS: 'Ресурс не содержит валидный RSS',
       },
     },
+    buttons: {
+      postButton: 'Просмотр',
+    },
+    headers: {
+      postsHeader: 'Посты',
+      feedsHeader: 'Фиды',
+    },
   },
 };

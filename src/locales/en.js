@@ -8,5 +8,12 @@ export default {
         invalidRSS: 'Resource does not contain valid RSS',
       },
     },
+    buttons: {
+      postButton: 'View',
+    },
+    headers: {
+      postsHeader: 'Posts',
+      feedsHeader: 'Feeds',
+    },
   },
 };

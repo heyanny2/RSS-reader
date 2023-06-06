@@ -2,15 +2,25 @@
 import * as yup from 'yup';
 import onChange from 'on-change';
 import axios from 'axios';
-import render from './view.js';
+import uniqueId from 'lodash/uniqueId.js';
 import i18next from 'i18next';
+import render from './view.js';
 import resources from '../locales/index.js';
+import parser from './parser.js';
 
 const defaultLanguage = 'ru';
 
 const validateLink = (link, rssLinks) => {
   const schema = yup.string().required().url().notOneOf(rssLinks);
   return schema.validate(link);
+};
+
+const axiosResponse = (url) => {
+  const proxy = 'https://allorigins.hexlet.app/get';
+  const newProxy = new URL(proxy);
+  newProxy.searchParams.append('disableCache', 'true');
+  newProxy.searchParams.append('url', url);
+  return axios.get(newProxy);
 };
 
 export default () => {
@@ -20,7 +30,7 @@ export default () => {
     debug: true,
     resources,
   }).then(() => {
-    const elements = { 
+    const elements = {
       form: document.querySelector('.rss-form'),
       input: document.querySelector('.form-control'),
       submitButton: document.querySelector('button[type="submit"]'),
@@ -29,10 +39,10 @@ export default () => {
 
     yup.setLocale({
       mixed: {
-        notOneOf: 'alreadyExists',
+        notOneOf: 'feedback.errors.alreadyExists',
       },
       string: {
-        url: 'invalidURL',
+        url: 'feedback.errors.invalidURL',
       },
     });
 
@@ -43,8 +53,8 @@ export default () => {
         errors: {},
       },
       data: {
-        feedList: [],
-        postList: [],
+        feeds: [],
+        posts: [],
       },
       uiState: {
       },
@@ -56,15 +66,23 @@ export default () => {
     elements.form.addEventListener('submit', (e) => {
       e.preventDefault();
       const formData = new FormData(e.target);
-      const link = formData.get('url').trim();
+      const inputValue = formData.get('url').trim();
 
-      validateLink(link, watchedState.rssLinks)
+      validateLink(inputValue, watchedState.rssLinks)
         .then(() => {
           watchedState.form.valid = true;
+          watchedState.form.processState = 'sending';
+          return axiosResponse(inputValue);
+        })
+        .then((response) => {
+          console.log(response);
+          const content = response.data.contents;
+          const { feed, posts } = parser(content);
+          const feedId = uniqueId();
         })
         .catch((error) => {
           watchedState.form.valid = false;
-          watchedState.form.processState = 'error';
+          watchedState.form.processState = error;
         })
     });
   });
