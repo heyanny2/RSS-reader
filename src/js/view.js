@@ -1,4 +1,4 @@
-const buildPosts = (state, postsDiv, i18next) => {
+const buildPosts = (elements, state, i18next) => {
   const postsContainer = document.createElement('div');
   postsContainer.classList.add('card', 'border-0');
 
@@ -44,10 +44,10 @@ const buildPosts = (state, postsDiv, i18next) => {
   });
 
   postsContainer.append(ul);
-  postsDiv.append(postsContainer);
+  elements.append(postsContainer);
 };
 
-const buildFeeds = (state, feedDiv) => {
+const buildFeeds = (elements, state, i18next) => {
   const feedContainer = document.createElement('div');
   feedContainer.classList.add('card', 'border-0');
 
@@ -82,7 +82,7 @@ const buildFeeds = (state, feedDiv) => {
     li.append(ul);
   });
   feedContainer.append(ul);
-  feedDiv.append(feedContainer);
+  elements.append(feedContainer);
 };
 
 const handleProcess = (elements, initialState, value, i18next) => {
@@ -128,19 +128,21 @@ const handleError = (elements, error) => {
 };
 
 export default (elements, initialState, i18next) => (path, value) => {
-  console.log('0');
   switch (path) {
     case 'form.valid':
-      console.log('1');
       handleValidation(elements, value);
       break;
     case 'form.processState':
-      console.log('2');
       handleProcess(elements, initialState, value, i18next);
       break;
     case 'form.errors':
-      console.log('3');
       handleError(elements, value, i18next);
+      break;
+    case 'data.feeds':
+      buildFeeds(elements, initialState, i18next);
+      break;
+    case 'data.posts':
+      buildPosts(elements, initialState, i18next)
       break;
     default:
       break;

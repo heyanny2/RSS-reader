@@ -35,6 +35,8 @@ export default () => {
       input: document.querySelector('.form-control'),
       submitButton: document.querySelector('button[type="submit"]'),
       statusFeedback: document.querySelector('.feedback'),
+      feeds: document.querySelector('.feeds'),
+      posts: document.querySelector('.posts'),
     };
 
     yup.setLocale({
@@ -75,10 +77,13 @@ export default () => {
           return axiosResponse(inputValue);
         })
         .then((response) => {
-          console.log(response);
           const content = response.data.contents;
           const { feed, posts } = parser(content);
           const feedId = uniqueId();
+
+          watchedState.rssLinks.push(inputValue);
+          watchedState.data.feeds.push(feed);
+          watchedState.form.processState = 'sent';
         })
         .catch((error) => {
           watchedState.form.valid = false;
