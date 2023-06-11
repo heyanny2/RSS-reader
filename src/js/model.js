@@ -40,11 +40,11 @@ export default () => {
     };
 
     yup.setLocale({
-      mixed: {
-        notOneOf: 'feedback.errors.alreadyExists',
-      },
       string: {
-        url: 'feedback.errors.invalidURL',
+        url: () => ({ key: 'feedback.errors.invalidURL' }),
+      },
+      mixed: {
+        notOneOf: () => ({ key: 'feedback.errors.alreadyExists'}),
       },
     });
 
@@ -80,13 +80,16 @@ export default () => {
           const content = response.data.contents;
           const { feed, posts } = parser(content);
           const feedId = uniqueId();
-
+          
           watchedState.rssLinks.push(inputValue);
           watchedState.data.feeds.push(feed);
+          watchedState.data.posts.push(...posts);
           watchedState.form.processState = 'sent';
         })
         .catch((error) => {
+          console.log(error);         
           watchedState.form.valid = false;
+
           watchedState.form.processState = error;
         })
     });

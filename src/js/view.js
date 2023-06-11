@@ -15,21 +15,19 @@ const buildPosts = (elements, state, i18next) => {
 
   const ul = document.createElement('ul');
   ul.classList.add('list-group', 'border-0', 'rounded-0');
-
   state.data.posts.forEach((post) => {
-
-    const { title, link, id } = post;
+    const { postTitle, postLink, id } = post;
 
     const li = document.createElement('li');
     li.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'align-items-start', 'border-0', 'border-end-0');
 
     const a = document.createElement('a');
-    a.setAttribute('href', link);
+    a.setAttribute('href', postLink);
     a.classList.add('fw-bold');
     a.setAttribute('data-id', id);
     a.setAttribute('target', '_blank');
     a.setAttribute('rel', 'noopener noreferrer');
-    a.textContent = title;
+    a.textContent = postTitle;
 
     const button = document.createElement('button');
     button.setAttribute('type', 'button');
@@ -44,7 +42,7 @@ const buildPosts = (elements, state, i18next) => {
   });
 
   postsContainer.append(ul);
-  elements.append(postsContainer);
+  elements.posts.append(postsContainer);
 };
 
 const buildFeeds = (elements, state, i18next) => {
@@ -64,25 +62,25 @@ const buildFeeds = (elements, state, i18next) => {
   const ul = document.createElement('ul');
   ul.classList.add('list-group', 'border-0', 'rounded-0');
 
-  state.data.posts.forEach((feed) => {
-    const { title, decription } = feed;
+  state.data.feeds.forEach((feed) => {
+    const { feedTitle, feedDescription } = feed;
 
     const li = document.createElement('li');
     li.classList.add('list-group-item', 'border-0', 'border-end-0');
 
     const h3 = document.createElement('h3');
     h3.classList.add('h6', 'm-0');
-    h3.textContent = title;
+    h3.textContent = feedTitle;
 
     const p = document.createElement('p');
     p.classList.add('m-0', 'small', 'text-black-50')
-    p.textContent = decription;
+    p.textContent = feedDescription;
 
     li.append(h3, p);
-    li.append(ul);
+    ul.append(li);
   });
   feedContainer.append(ul);
-  elements.append(feedContainer);
+  elements.feeds.append(feedContainer);
 };
 
 const handleProcess = (elements, initialState, value, i18next) => {
