@@ -120,9 +120,9 @@ const handleValidation = (elements, valid) => {
   }
 };
 
-const handleError = (elements, error) => {
-  const { errorMessage } = error;
-  elements.statusFeedback.textContent = i18next.t(errorMessage);
+const handleError = (elements, error, i18next) => {
+  const { message } = error;
+  elements.statusFeedback.textContent = i18next.t(message);
 };
 
 export default (elements, initialState, i18next) => (path, value) => {

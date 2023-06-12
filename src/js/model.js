@@ -11,6 +11,7 @@ import parser from './parser.js';
 const defaultLanguage = 'ru';
 
 const validateLink = (link, rssLinks) => {
+  console.log(rssLinks);
   const schema = yup.string().required().url().notOneOf(rssLinks);
   return schema.validate(link);
 };
@@ -40,11 +41,11 @@ export default () => {
     };
 
     yup.setLocale({
-      string: {
-        url: () => ({ key: 'feedback.errors.invalidURL' }),
+      string:{
+        url: 'feedback.errors.invalidURL',
       },
       mixed: {
-        notOneOf: () => ({ key: 'feedback.errors.alreadyExists'}),
+        notOneOf: 'feedback.errors.alreadyExists',
       },
     });
 
@@ -87,10 +88,11 @@ export default () => {
           watchedState.form.processState = 'sent';
         })
         .catch((error) => {
-          console.log(error);         
+          console.log(error.message);         
           watchedState.form.valid = false;
-
-          watchedState.form.processState = error;
+          watchedState.form.processState = 'error';
+          error.message = error.message === 'Parser error' ? 'feedback.errors.invalidURL' : error.message;
+          watchedState.form.errors = error;
         })
     });
   });
