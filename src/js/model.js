@@ -9,9 +9,9 @@ import resources from '../locales/index.js';
 import parser from './parser.js';
 
 const defaultLanguage = 'ru';
+const timeout = 5000;
 
 const validateLink = (link, rssLinks) => {
-  console.log(rssLinks);
   const schema = yup.string().required().url().notOneOf(rssLinks);
   return schema.validate(link);
 };
@@ -22,6 +22,27 @@ const axiosResponse = (url) => {
   newProxy.searchParams.append('disableCache', 'true');
   newProxy.searchParams.append('url', url);
   return axios.get(newProxy);
+};
+
+const newPosts = (state) => {
+  const promises = state.data.feeds
+    .map(({ feedLink, feedId }) => axiosResponse(feedLink)
+      .then((response) => {
+        const { posts } = parser(response.data.contents);
+        const addedPosts = state.data.posts.map((post) => post.postLink);
+        const newPosts = posts.filter((post) => !addedPosts.includes(post.postLink));
+        console.log(newPosts);
+        if (newPosts.length > 0) {
+          const preparedPosts = newPosts.map((post) => ({ ...post, feedId, id: uniqueId() }));
+          state.data.posts = [...state.data.posts, ...preparedPosts];
+        }
+        return Promise.resolve();
+      })
+    )
+  Promise.allSettled(promises)
+    .finally(() => {
+      setTimeout(() => newPosts(state), timeout);
+    });
 };
 
 export default () => {
@@ -65,6 +86,7 @@ export default () => {
     };
 
     const watchedState = onChange(initialState, render(elements, initialState, i18nInstance));
+    newPosts(watchedState);
 
     elements.form.addEventListener('submit', (e) => {
       e.preventDefault();
@@ -83,7 +105,8 @@ export default () => {
           const feedId = uniqueId();
           
           watchedState.rssLinks.push(inputValue);
-          watchedState.data.feeds.push(feed);
+          watchedState.data.feeds.push({ ...feed, feedId });
+          
           watchedState.data.posts.push(...posts);
           watchedState.form.processState = 'sent';
         })

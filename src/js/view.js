@@ -1,4 +1,5 @@
 const buildPosts = (elements, state, i18next) => {
+  elements.posts.textContent = '';
   const postsContainer = document.createElement('div');
   postsContainer.classList.add('card', 'border-0');
 
@@ -46,6 +47,7 @@ const buildPosts = (elements, state, i18next) => {
 };
 
 const buildFeeds = (elements, state, i18next) => {
+  elements.feeds.textContent = '';
   const feedContainer = document.createElement('div');
   feedContainer.classList.add('card', 'border-0');
 
