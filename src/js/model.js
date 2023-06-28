@@ -26,23 +26,26 @@ const axiosResponse = (url) => {
 
 const newPosts = (state) => {
   const promises = state.data.feeds
-    .map(({ feedLink, feedId }) => axiosResponse(feedLink)
+    .map(({ link, feedId }) => axiosResponse(link)
       .then((response) => {
-        const { posts } = parser(response.data.contents);
+        const parsedData = parser(response.data.contents);
+        const { posts } = parsedData;
         const addedPosts = state.data.posts.map((post) => post.postLink);
         const newPosts = posts.filter((post) => !addedPosts.includes(post.postLink));
-        console.log(newPosts);
         if (newPosts.length > 0) {
           const preparedPosts = newPosts.map((post) => ({ ...post, feedId, id: uniqueId() }));
           state.data.posts = [...state.data.posts, ...preparedPosts];
         }
         return Promise.resolve();
       })
+      .catch((error) => {
+        console.log(error.message);
+      })
     )
   Promise.allSettled(promises)
     .finally(() => {
       setTimeout(() => newPosts(state), timeout);
-    });
+  });
 };
 
 export default () => {
@@ -59,6 +62,12 @@ export default () => {
       statusFeedback: document.querySelector('.feedback'),
       feeds: document.querySelector('.feeds'),
       posts: document.querySelector('.posts'),
+      modal: {
+        window: document.querySelector('.modal'),
+        title: document.querySelector('.modal-title'),
+        body: document.querySelector('.modal-body'),
+        button: document.querySelector('.full-article'),
+      }
     };
 
     yup.setLocale({
@@ -81,6 +90,8 @@ export default () => {
         posts: [],
       },
       uiState: {
+        modal: {},
+        visitedPosts: {},
       },
       rssLinks: [],
     };
@@ -105,9 +116,10 @@ export default () => {
           const feedId = uniqueId();
           
           watchedState.rssLinks.push(inputValue);
-          watchedState.data.feeds.push({ ...feed, feedId });
+          watchedState.data.feeds.push({ ...feed, feedId, link: inputValue });
           
-          watchedState.data.posts.push(...posts);
+          const postsWithId = posts.map((post) => ({ ...post, feedId, id: uniqueId() }));
+          watchedState.data.posts.push(...postsWithId);
           watchedState.form.processState = 'sent';
         })
         .catch((error) => {
@@ -118,5 +130,9 @@ export default () => {
           watchedState.form.errors = error;
         })
     });
+    elements.modal.window.addEventListener('show.bs.modal', (e) => {
+
+    })
+    elements.posts.addEventListener('click', (e) => {})
   });
 };

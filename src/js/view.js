@@ -122,6 +122,10 @@ const handleValidation = (elements, valid) => {
   }
 };
 
+const handleModal = (elements, state, postId) => {
+  
+}
+
 const handleError = (elements, error, i18next) => {
   const { message } = error;
   elements.statusFeedback.textContent = i18next.t(message);
