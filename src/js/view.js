@@ -123,7 +123,19 @@ const handleValidation = (elements, valid) => {
 };
 
 const handleModal = (elements, state, postId) => {
-  
+  const currentPost = state.data.posts.find(({ id }) => id === postId);
+  const { postTitle, postDescription, postLink } = currentPost;
+  elements.modal.title.textContent = postTitle;
+  elements.modal.body.textContent = postDescription;
+  elements.modal.linkButton.setAttribute('href', postLink);
+};
+
+const handleVisitedLinks = (elements, state) => {
+  state.uiState.visitedPosts.forEach((id) => {
+    const visitedPost = elements.posts.querySelector(`[data-id="${id}"]`);
+    visitedPost.classList.remove('fw-bold');
+    visitedPost.classList.add('fw-normal');
+  })
 }
 
 const handleError = (elements, error, i18next) => {
@@ -146,8 +158,12 @@ export default (elements, initialState, i18next) => (path, value) => {
       buildFeeds(elements, initialState, i18next);
       break;
     case 'data.posts':
-      buildPosts(elements, initialState, i18next)
+      buildPosts(elements, initialState, i18next);
       break;
+    case 'uiState.modal':
+      handleModal(elements, initialState, value);
+    case 'uiState.visitedPosts':
+      handleVisitedLinks(elements, initialState);
     default:
       break;
   }

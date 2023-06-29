@@ -66,7 +66,7 @@ export default () => {
         window: document.querySelector('.modal'),
         title: document.querySelector('.modal-title'),
         body: document.querySelector('.modal-body'),
-        button: document.querySelector('.full-article'),
+        linkButton: document.querySelector('.full-article'),
       }
     };
 
@@ -90,8 +90,8 @@ export default () => {
         posts: [],
       },
       uiState: {
-        modal: {},
-        visitedPosts: {},
+        modal: '',
+        visitedPosts: new Set(),
       },
       rssLinks: [],
     };
@@ -131,8 +131,13 @@ export default () => {
         })
     });
     elements.modal.window.addEventListener('show.bs.modal', (e) => {
-
+      const currentId = e.relatedTarget.getAttribute('data-id');
+      watchedState.uiState.visitedPosts.add(currentId);
+      watchedState.uiState.modal = currentId;
+     })
+    elements.posts.addEventListener('click', (e) => {
+      const id = e.target.dataset.id;
+      watchedState.uiState.visitedPosts.add(id);
     })
-    elements.posts.addEventListener('click', (e) => {})
   });
 };
