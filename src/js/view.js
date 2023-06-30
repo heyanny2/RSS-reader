@@ -5,14 +5,13 @@ const buildPosts = (elements, state, i18next) => {
 
   const headerDiv = document.createElement('div');
   headerDiv.classList.add('card-body');
-  
+
   const header = document.createElement('h2');
   header.classList.add('card-title', 'h4');
   header.textContent = i18next.t('headers.postsHeader');
-  
+
   headerDiv.append(header);
   postsContainer.append(headerDiv);
-
 
   const ul = document.createElement('ul');
   ul.classList.add('list-group', 'border-0', 'rounded-0');
@@ -53,11 +52,11 @@ const buildFeeds = (elements, state, i18next) => {
 
   const headerDiv = document.createElement('div');
   headerDiv.classList.add('card-body');
-  
+
   const header = document.createElement('h2');
   header.classList.add('card-title', 'h4');
   header.textContent = i18next.t('headers.feedsHeader');
-  
+
   headerDiv.append(header);
   feedContainer.append(headerDiv);
 
@@ -75,7 +74,7 @@ const buildFeeds = (elements, state, i18next) => {
     h3.textContent = feedTitle;
 
     const p = document.createElement('p');
-    p.classList.add('m-0', 'small', 'text-black-50')
+    p.classList.add('m-0', 'small', 'text-black-50');
     p.textContent = feedDescription;
 
     li.append(h3, p);
@@ -135,8 +134,8 @@ const handleVisitedLinks = (elements, state) => {
     const visitedPost = elements.posts.querySelector(`[data-id="${id}"]`);
     visitedPost.classList.remove('fw-bold');
     visitedPost.classList.add('fw-normal');
-  })
-}
+  });
+};
 
 const handleError = (elements, error, i18next) => {
   const { message } = error;
@@ -162,8 +161,10 @@ export default (elements, initialState, i18next) => (path, value) => {
       break;
     case 'uiState.modal':
       handleModal(elements, initialState, value);
+      break;
     case 'uiState.visitedPosts':
       handleVisitedLinks(elements, initialState);
+      break;
     default:
       break;
   }

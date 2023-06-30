@@ -1,7 +1,7 @@
 export default (data) => {
   const parser = new DOMParser();
   const parsedData = parser.parseFromString(data, 'application/xml');
-  
+
   const error = parsedData.querySelector('parsererror');
   if (error) {
     throw new Error('Parser error');
@@ -20,7 +20,7 @@ export default (data) => {
     const postDescription = item.querySelector('description').textContent;
     const postLink = item.querySelector('link').textContent;
     return { postTitle, postDescription, postLink };
-  })
-  
-  return { feed, posts }
+  });
+
+  return { feed, posts };
 };

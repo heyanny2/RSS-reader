@@ -1,4 +1,3 @@
-
 import * as yup from 'yup';
 import onChange from 'on-change';
 import axios from 'axios';
@@ -24,7 +23,7 @@ const axiosResponse = (url) => {
   return axios.get(newProxy);
 };
 
-const newPosts = (state) => {
+const getNewPosts = (state) => {
   const promises = state.data.feeds
     .map(({ link, feedId }) => axiosResponse(link)
       .then((response) => {
@@ -40,12 +39,11 @@ const newPosts = (state) => {
       })
       .catch((error) => {
         console.log(error.message);
-      })
-    )
+      }));
   Promise.allSettled(promises)
     .finally(() => {
-      setTimeout(() => newPosts(state), timeout);
-  });
+      setTimeout(() => getNewPosts(state), timeout);
+    });
 };
 
 export default () => {
@@ -67,11 +65,11 @@ export default () => {
         title: document.querySelector('.modal-title'),
         body: document.querySelector('.modal-body'),
         linkButton: document.querySelector('.full-article'),
-      }
+      },
     };
 
     yup.setLocale({
-      string:{
+      string: {
         url: 'feedback.errors.invalidURL',
       },
       mixed: {
@@ -82,7 +80,7 @@ export default () => {
     const initialState = {
       form: {
         valid: true,
-        processState: 'filling', //(filling, sent, error, sending)
+        processState: 'filling',
         errors: {},
       },
       data: {
@@ -97,7 +95,7 @@ export default () => {
     };
 
     const watchedState = onChange(initialState, render(elements, initialState, i18nInstance));
-    newPosts(watchedState);
+    getNewPosts(watchedState);
 
     elements.form.addEventListener('submit', (e) => {
       e.preventDefault();
@@ -114,30 +112,29 @@ export default () => {
           const content = response.data.contents;
           const { feed, posts } = parser(content);
           const feedId = uniqueId();
-          
+
           watchedState.rssLinks.push(inputValue);
           watchedState.data.feeds.push({ ...feed, feedId, link: inputValue });
-          
+
           const postsWithId = posts.map((post) => ({ ...post, feedId, id: uniqueId() }));
           watchedState.data.posts.push(...postsWithId);
           watchedState.form.processState = 'sent';
         })
         .catch((error) => {
-          console.log(error.message);         
           watchedState.form.valid = false;
           watchedState.form.processState = 'error';
           error.message = error.message === 'Parser error' ? 'feedback.errors.invalidURL' : error.message;
           watchedState.form.errors = error;
-        })
+        });
     });
     elements.modal.window.addEventListener('show.bs.modal', (e) => {
       const currentId = e.relatedTarget.getAttribute('data-id');
       watchedState.uiState.visitedPosts.add(currentId);
       watchedState.uiState.modal = currentId;
-     })
+    });
     elements.posts.addEventListener('click', (e) => {
-      const id = e.target.dataset.id;
+      const { id } = e.target.dataset.id;
       watchedState.uiState.visitedPosts.add(id);
-    })
+    });
   });
 };
