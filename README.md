@@ -6,6 +6,8 @@
 
 This aggregator helps you to collect RSS feeds and watches for new posts.
 
+![RSS-img](./img/demo.gif)
+
 ## Installation and setup:
 ```
 # clone repo
@@ -24,4 +26,3 @@ npm start
 make build
 ```
 
-![RSS-img](./img/demo.gif)
