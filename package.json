@@ -2,7 +2,7 @@
   "name": "@hexlet/code",
   "version": "1.0.0",
   "type": "module",
-  "description": "[![Actions Status](https://github.com/heyanny2/frontend-project-11/workflows/hexlet-check/badge.svg)](https://github.com/heyanny2/frontend-project-11/actions)",
+  "description": "RSS-reader",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

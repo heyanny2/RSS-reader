@@ -7,19 +7,11 @@ import url from 'url';
 import HTMLWebpackPlugin from 'html-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 
-const __filename = url.fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
 const mode = process.env.NODE_ENV === 'production' ? 'production' : 'development';
 
 export default {
-  //context: path.resolve(__dirname, 'src'),
   mode: mode,
   entry: './src/js/index.js',
-  output: {
-    path: path.resolve(__dirname, 'dist'),
-    clean: true,
-  },
   devServer: {
     open: true,
     host: 'localhost',
@@ -34,7 +26,6 @@ export default {
     rules: [
       {
         test: /\.(js|jsx)$/i,
-        loader: 'babel-loader',
       },
       {
         test: /\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
