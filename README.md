@@ -25,4 +25,3 @@ npm start
 # webpack build
 make build
 ```
-
