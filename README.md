@@ -24,3 +24,4 @@ npm start
 make build
 ```
 
+![RSS-img](./img/demo.gif)
