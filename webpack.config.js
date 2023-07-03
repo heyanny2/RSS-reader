@@ -12,7 +12,10 @@ const mode = process.env.NODE_ENV === 'production' ? 'production' : 'development
 export default {
   mode: mode,
   entry: './src/js/index.js',
-
+  output: {
+    path: path.resolve(__dirname, 'img'),
+    clean: true,
+  },
   devServer: {
     open: true,
     host: 'localhost',
