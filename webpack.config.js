@@ -8,7 +8,8 @@ import HTMLWebpackPlugin from 'html-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 
 const mode = process.env.NODE_ENV === 'production' ? 'production' : 'development';
-
+const __filename = url.fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 export default {
   mode: mode,
   entry: './src/js/index.js',
