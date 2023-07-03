@@ -13,7 +13,8 @@ export default {
   mode: mode,
   entry: './src/js/index.js',
   output: {
-    path: path.resolve('dist'),
+    filename: 'bundle.js',
+    path: path.resolve(__dirname, 'img'),
     clean: true,
   },
   devServer: {
