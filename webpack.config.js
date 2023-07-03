@@ -13,7 +13,6 @@ export default {
   mode: mode,
   entry: './src/js/index.js',
   output: {
-    path: path.resolve(__dirname, 'src'),
     clean: true,
   },
   devServer: {
