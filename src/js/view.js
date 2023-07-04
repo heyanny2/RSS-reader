@@ -23,7 +23,7 @@ const buildPosts = (elements, state, i18next) => {
 
     const a = document.createElement('a');
     a.setAttribute('href', postLink);
-    a.classList.add('fw-bold');
+    a.classList.add(state.uiState.visitedPosts.has(id) ? 'fw-normal' : 'fw-bold');
     a.setAttribute('data-id', id);
     a.setAttribute('target', '_blank');
     a.setAttribute('rel', 'noopener noreferrer');
