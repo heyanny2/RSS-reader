@@ -6,6 +6,8 @@
 
 This aggregator helps you to collect RSS feeds and watches for new posts.
 
+https://frontend-project-11-heyanny2.vercel.app/
+
 ![RSS-img](./img/demo.gif)
 
 ## Installation and setup:

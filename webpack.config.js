@@ -8,13 +8,12 @@ import HTMLWebpackPlugin from 'html-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 
 const mode = process.env.NODE_ENV === 'production' ? 'production' : 'development';
-const __filename = url.fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+
 export default {
   mode: mode,
   entry: './src/js/index.js',
   output: {
-    path: path.resolve(__dirname, 'img'),
+    path: path.resolve(__dirname, 'dist'),
     clean: true,
   },
   devServer: {
@@ -29,9 +28,6 @@ export default {
   ],
   module: {
     rules: [
-      {
-        test: /\.(js|jsx)$/i,
-      },
       {
         test: /\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
         type: 'asset',
