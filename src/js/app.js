@@ -35,7 +35,6 @@ const getNewPosts = (state) => {
           const preparedPosts = newPosts.map((post) => ({ ...post, feedId, id: uniqueId() }));
           state.data.posts = [...state.data.posts, ...preparedPosts];
         }
-        //return Promise.resolve();
       })
       .catch((error) => {
         console.log(error.message);
@@ -120,16 +119,13 @@ export default () => {
           watchedState.form.processState = 'sent';
         })
         .catch((error) => {
-          
           watchedState.form.processState = 'error';
-
           switch (error.name) {
             case 'AxiosError':
               error.message = 'feedback.errors.networkError';
               break;
             case 'ValidationError':
               watchedState.form.valid = false;
-              error.message = error.message;
               break;
             case 'Error':
               error.message = error.message === 'Parser error' ? 'feedback.errors.invalidRSS' : error.message;
@@ -146,7 +142,7 @@ export default () => {
       watchedState.uiState.modal = currentId;
     });
     elements.posts.addEventListener('click', (e) => {
-      const id = e.target.dataset.id;
+      const { id } = e.target.dataset.id;
       watchedState.uiState.visitedPosts.add(id);
     });
   });
