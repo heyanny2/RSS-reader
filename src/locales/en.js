@@ -6,6 +6,7 @@ export default {
         alreadyExists: 'RSS already exists',
         invalidURL: 'The link must be a valid URL',
         invalidRSS: 'Resource does not contain valid RSS',
+        networkError: 'Network error',
       },
     },
     buttons: {
