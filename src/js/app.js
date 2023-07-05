@@ -120,9 +120,22 @@ export default () => {
           watchedState.form.processState = 'sent';
         })
         .catch((error) => {
-          watchedState.form.valid = false;
+          
           watchedState.form.processState = 'error';
-          error.message = error.message === 'Parser error' ? 'feedback.errors.invalidRSS' : 'feedback.errors.networkError';
+
+          switch (error.name) {
+            case 'AxiosError':
+              error.message = 'feedback.errors.networkError';
+              break;
+            case 'ValidationError':
+              error.message = 'feedback.errors.invalidURL';
+              break;
+            case 'Error':
+              error.message = error.message === 'Parser error' ? 'feedback.errors.invalidRSS' : error.message;
+              break;
+            default:
+              console.log(error.message);
+          }
           watchedState.form.errors = error;
         });
     });
