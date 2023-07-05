@@ -122,7 +122,7 @@ export default () => {
         .catch((error) => {
           watchedState.form.valid = false;
           watchedState.form.processState = 'error';
-          error.message = error.message === 'Parser error' ? 'feedback.errors.invalidRSS' : error.message;
+          error.message = error.message === 'Parser error' ? 'feedback.errors.invalidRSS' : 'feedback.errors.networkError';
           watchedState.form.errors = error;
         });
     });
