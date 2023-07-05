@@ -128,7 +128,8 @@ export default () => {
               error.message = 'feedback.errors.networkError';
               break;
             case 'ValidationError':
-              error.message = 'feedback.errors.invalidURL';
+              watchedState.form.valid = false;
+              error.message = error.message;
               break;
             case 'Error':
               error.message = error.message === 'Parser error' ? 'feedback.errors.invalidRSS' : error.message;
