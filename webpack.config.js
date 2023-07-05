@@ -4,10 +4,10 @@
 //import path from 'path';
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 //import HTMLWebpackPlugin from 'html-webpack-plugin';
-import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+//import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 
 const mode = process.env.NODE_ENV === 'production' ? 'production' : 'development';
 
@@ -23,7 +23,7 @@ module.exports = {
     host: 'localhost',
   },
     plugins: [
-    new HTMLWebpackPlugin({
+    new HtmlWebpackPlugin({
       template: 'index.html',
     }),
     new MiniCssExtractPlugin(),
