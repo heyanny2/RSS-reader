@@ -1,15 +1,17 @@
 // Generated using webpack-cli https://github.com/webpack/webpack-cli
 
 /* eslint-disable */
-import path from 'path';
-import url from 'url';
+//import path from 'path';
+const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-import HTMLWebpackPlugin from 'html-webpack-plugin';
-import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+
+// import HTMLWebpackPlugin from 'html-webpack-plugin';
+// import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 
 const mode = process.env.NODE_ENV === 'production' ? 'production' : 'development';
 
-export default {
+module.exports = {
   mode: mode,
   entry: './src/js/index.js',
   output: {
