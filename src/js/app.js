@@ -142,7 +142,7 @@ export default () => {
       watchedState.uiState.modal = currentId;
     });
     elements.posts.addEventListener('click', (e) => {
-      const { id } = e.target.dataset.id;
+      const id = e.target.dataset.id;
       watchedState.uiState.visitedPosts.add(id);
     });
   });
